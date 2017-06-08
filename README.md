@@ -1,0 +1,2 @@
+# drings
+supplemental strings functions
