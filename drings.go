@@ -1,6 +1,42 @@
 package drings
 
-import "strings"
+import (
+	"sort"
+	"strings"
+)
+
+// MaxLen returns the length of the longest string in an array
+func MaxLen(arr []string) int {
+	var i, max int
+	for ; i < len(arr); i++ {
+		if max < len(arr[i]) {
+			max = len(arr[i])
+		}
+	}
+	return max
+}
+
+// Dedup takes a string slice and returns the string slice sorted and deduplicated
+func Dedup(s []string) []string {
+	sort.Strings(s)
+	for i := 0; i < len(s)-1; {
+		if s[i] == s[i+1] {
+			s = append(s[:i], s[i+1:]...)
+		} else {
+			i++
+		}
+	}
+	return s
+}
+
+// Copy returns a deepcopy of a stringslice
+func Copy(src []string) []string {
+	var dst []string
+	for _, each := range src {
+		dst = append(dst, each)
+	}
+	return dst
+}
 
 // SplitAndTrimSpace splits a given string based on a delimiter, then trims
 // spaces from every resulting string.
@@ -8,30 +44,15 @@ func SplitAndTrimSpace(in, sep string) []string {
 	valueArr := strings.Split(in, sep)
 	for i := 0; i < len(valueArr); {
 		valueArr[i] = strings.TrimSpace(valueArr[i])
-		if valueArr[i] != "" {
-			// either it's not empty and increment
+		if len(valueArr[i]) > 0 {
+			// either it's not empty and go onto the next
 			i++
 		} else {
 			// or eliminate this cell because it's empty
-			if i < len(valueArr)-1 {
-				valueArr = append(valueArr[:i], valueArr[i+1])
-			} else {
-				valueArr = valueArr[:i]
-			}
+			valueArr = append(valueArr[:i], valueArr[i+1:]...)
 		}
 	}
 	return valueArr
-}
-
-// MaxLen returns the length of the longest string in an array
-func MaxLen(arr []string) int {
-	var i, max int
-	for i < len(arr) {
-		if len(arr[i]) > max {
-			max = len(arr[i])
-		}
-	}
-	return max
 }
 
 // PadRight pads a string with the given padding string, to make a string of the
