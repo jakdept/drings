@@ -30,7 +30,7 @@ func Dedup(s []string) []string {
 }
 
 // Copy returns a deepcopy of a stringslice
-func Copy(src []string) []string {
+func DeepCopy(src []string) []string {
 	var dst []string
 	for _, each := range src {
 		dst = append(dst, each)
@@ -59,7 +59,7 @@ func SplitAndTrimSpace(in, sep string) []string {
 // given length. The padding string may be cut off in the middle if it is
 // multiple characters, but the returned string will be of the given length.
 func PadRight(s, pad string, length int) string {
-	if pad == "" {
+	if pad == "" || length < len(s) {
 		return s
 	}
 	for len(s) < length {
@@ -72,7 +72,7 @@ func PadRight(s, pad string, length int) string {
 // given length. The padding string may be cut off in the middle if it is
 // multiple characters, but the returned string will be of the given length.
 func PadLeft(s, pad string, length int) string {
-	if pad == "" {
+	if pad == "" || length < len(s) {
 		return s
 	}
 	for len(s) < length {

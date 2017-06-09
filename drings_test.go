@@ -70,7 +70,7 @@ func TestDedup(t *testing.T) {
 				"elephant",
 			},
 		}, {
-			in: Copy(technologicLines),
+			in: DeepCopy(technologicLines),
 			expected: []string{
 				"Buy it, use it, break it, fix it,",
 				"Charge it, point it, zoom it, press it,",
@@ -145,4 +145,154 @@ func TestSplitAndTrimSpace(t *testing.T) {
 	// fmt.Println(string(formattedSong))
 
 	assert.Equal(t, technologicLines, SplitAndTrimSpace(technologicSong, "\n"))
+}
+
+func TestPadRight(t *testing.T) {
+	testdata := []struct {
+		in       string
+		pad      string
+		size     int
+		expected string
+	}{
+		{
+			in:       "apple",
+			pad:      " ",
+			size:     10,
+			expected: "apple     ",
+		}, {
+			in:       "apple",
+			pad:      " ",
+			size:     5,
+			expected: "apple",
+		}, {
+			in:       "apple",
+			pad:      " ",
+			size:     4,
+			expected: "apple",
+		}, {
+			in:       "apple",
+			pad:      " ",
+			size:     0,
+			expected: "apple",
+		}, {
+			in:       "apple",
+			pad:      "+",
+			size:     8,
+			expected: "apple+++",
+		},
+	}
+
+	for id, test := range testdata {
+		t.Run(fmt.Sprintf("PadRight #%d", id), func(t *testing.T) {
+			assert.Equal(t, test.expected, PadRight(test.in, test.pad, test.size))
+		})
+	}
+}
+
+func TestPadLeft(t *testing.T) {
+	testdata := []struct {
+		in       string
+		pad      string
+		size     int
+		expected string
+	}{
+		{
+			in:       "apple",
+			pad:      " ",
+			size:     10,
+			expected: "     apple",
+		}, {
+			in:       "apple",
+			pad:      " ",
+			size:     5,
+			expected: "apple",
+		}, {
+			in:       "apple",
+			pad:      " ",
+			size:     4,
+			expected: "apple",
+		}, {
+			in:       "apple",
+			pad:      " ",
+			size:     0,
+			expected: "apple",
+		}, {
+			in:       "apple",
+			pad:      "+",
+			size:     8,
+			expected: "+++apple",
+		},
+	}
+
+	for id, test := range testdata {
+		t.Run(fmt.Sprintf("PadLeft #%d", id), func(t *testing.T) {
+			assert.Equal(t, test.expected, PadLeft(test.in, test.pad, test.size))
+		})
+	}
+}
+
+func TestPadAllRight(t *testing.T) {
+	testdata := []struct {
+		in       []string
+		pad      string
+		size     int
+		expected []string
+	}{
+		{
+			in: []string{
+				"apple",
+				"banana",
+				"carrot cake",
+				"dog",
+			},
+			pad:  "+",
+			size: 10,
+			expected: []string{
+				"apple+++++",
+				"banana++++",
+				"carrot cake",
+				"dog+++++++",
+			},
+		},
+	}
+
+	for id, test := range testdata {
+		t.Run(fmt.Sprintf("PadAllRight #%d", id), func(t *testing.T) {
+			assert.Equal(t, test.expected, PadAllRight(test.in, test.pad, test.size))
+		})
+	}
+
+}
+
+func TestPadAllLeft(t *testing.T) {
+	testdata := []struct {
+		in       []string
+		pad      string
+		size     int
+		expected []string
+	}{
+		{
+			in: []string{
+				"apple",
+				"banana",
+				"carrot cake",
+				"dog",
+			},
+			pad:  "+",
+			size: 10,
+			expected: []string{
+				"+++++apple",
+				"++++banana",
+				"carrot cake",
+				"+++++++dog",
+			},
+		},
+	}
+
+	for id, test := range testdata {
+		t.Run(fmt.Sprintf("PadAllLeft #%d", id), func(t *testing.T) {
+			assert.Equal(t, test.expected, PadAllLeft(test.in, test.pad, test.size))
+		})
+	}
+
 }
